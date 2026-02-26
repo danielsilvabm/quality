@@ -47,4 +47,4 @@ jobs:
 
       # 6️⃣ Relatório final de auditoria
       - name: Relatório de Auditoria
-        run: echo "O código do aluno [Daniel] foi auditado, está seguindo as normas corretas e está pronto para o deploy!"
+        run: echo "O código do aluno [Daniel M] foi auditado, está seguindo as normas corretas e está pronto para o deploy!"
