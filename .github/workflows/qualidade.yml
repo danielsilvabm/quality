@@ -1,0 +1,51 @@
+name: Auditoria de Qualidade
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  auditoria:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Checkout
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      # 2️⃣ Verificar se pasta src existe
+      - name: Verificar pasta src
+        run: |
+          if [ ! -d "src" ]; then
+            echo "ERRO: Pasta src não encontrada!"
+            exit 1
+          fi
+
+      # 3️⃣ Verificar se CSS está no caminho correto
+      - name: Verificar CSS
+        run: |
+          if [ ! -f "src/css/style.css" ]; then
+            echo "ERRO: Arquivo src/css/style.css não encontrado!"
+            exit 1
+          fi
+
+      # 4️⃣ Verificar se existe footer com nome do aluno
+      - name: Verificar presença do footer
+        run: |
+          if ! grep -q "<footer>" src/index.html; then
+            echo "ERRO: Tag <footer> obrigatória não encontrada!"
+            exit 1
+          fi
+
+      # 5️⃣ Linting Profissional com HTMLHint
+      - name: HTMLHint
+        uses: Cyb3r-Jak3/htmlhint-action@v1
+        with:
+          target_pattern: 'src/index.html'
+
+      # 6️⃣ Relatório Final de Auditoria
+      - name: Relatório de aprovação
+        if: success()
+        run: echo "O código do aluno Daniel Martins foi auditado, está seguindo as normas corretas e está pronto para o deploy!"
