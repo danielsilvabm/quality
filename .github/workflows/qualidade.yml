@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout
+      # 1️⃣ Checkout do repositório
       - name: Checkout do código
         uses: actions/checkout@v4
 
@@ -19,7 +19,7 @@ jobs:
       - name: Verificar pasta src
         run: |
           if [ ! -d "src" ]; then
-            echo "ERRO: Pasta src não encontrada!"
+            echo "❌ ERRO: Pasta src não encontrada!"
             exit 1
           fi
 
@@ -27,25 +27,33 @@ jobs:
       - name: Verificar CSS
         run: |
           if [ ! -f "src/css/style.css" ]; then
-            echo "ERRO: Arquivo src/css/style.css não encontrado!"
+            echo "❌ ERRO: Arquivo src/css/style.css não encontrado!"
             exit 1
           fi
 
-      # 4️⃣ Verificar se existe footer com nome do aluno
+      # 4️⃣ Verificar se existe footer obrigatório
       - name: Verificar presença do footer
         run: |
           if ! grep -q "<footer>" src/index.html; then
-            echo "ERRO: Tag <footer> obrigatória não encontrada!"
+            echo "❌ ERRO: Tag <footer> obrigatória não encontrada!"
             exit 1
           fi
 
-      # 5️⃣ Linting Profissional com HTMLHint
-      - name: HTMLHint
-        uses: Cyb3r-Jak3/htmlhint-action@v1.1.0
+      # 5️⃣ Instalar Node.js
+      - name: Instalar Node
+        uses: actions/setup-node@v4
         with:
-          target_pattern: 'src/index.html'
+          node-version: '18'
 
-      # 6️⃣ Relatório Final de Auditoria
+      # 6️⃣ Instalar HTMLHint
+      - name: Instalar HTMLHint
+        run: npm install -g htmlhint
+
+      # 7️⃣ Rodar HTMLHint
+      - name: Rodar HTMLHint
+        run: htmlhint src/index.html
+
+      # 8️⃣ Relatório Final
       - name: Relatório de aprovação
         if: success()
-        run: echo "O código do aluno Daniel Martins foi auditado, está seguindo as normas corretas e está pronto para o deploy!"
+        run: echo " O código do aluno Daniel Martins foi auditado, está seguindo as normas corretas e está pronto para o deploy!"
