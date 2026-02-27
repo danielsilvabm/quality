@@ -41,7 +41,7 @@ jobs:
 
       # 5️⃣ Linting Profissional com HTMLHint
       - name: HTMLHint
-        uses: Cyb3r-Jak3/htmlhint-action@v1
+        uses: Cyb3r-Jak3/htmlhint-action@v1.1.0
         with:
           target_pattern: 'src/index.html'
 
